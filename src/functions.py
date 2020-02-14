@@ -9,7 +9,7 @@ import matplotlib.patches as mpatches
 import matplotlib.colors
 
 def create_df():
-        df = gp.read_file('tl_2017_53_puma10/tl_2017_53_puma10.shp')
+        df = gp.read_file('../exploratory/tl_2017_53_puma10/')
         lst = [str(num) for num in range(11610, 11616)]
         df["s_kc"] = df['PUMACE10'].isin(lst)
         df["kc"] = df['NAMELSAD10'].str.contains("King|Seattle")
