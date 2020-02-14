@@ -62,13 +62,22 @@ def create_race_bar(race_2016,race_2017):
     race_1620=race_1620.rename(columns={'Total': 'Total Population'})
     race_1620=race_1620.reset_index()
    
+    # for i, c in enumerate(race_1620):
+    #     if 0<i <5:
+    #         if i == 3:
+    #             data_bar=race_1620.loc[race_1620['index']!='Total', ['index', c, 'Year']]
+    #         else:
+    #             data_bar=race_1620.loc[:, ['index',  c, 'Year']]
+    #         bar = sns.catplot(x=c, y='index', hue='Year', data=data_bar, kind ='bar', aspect=3, palette='Set2')
+    #         sns.set(font_scale=1.5)
+    #         bar.set_ylabels('Race')
     for i, c in enumerate(race_1620):
         if 0<i <5:
-            # if i == 3:
-            #     data_bar=race_1620.loc[race_1620['index']!='Total', ['index', c, 'Year']]
-            # else:
-            data_bar=race_1620.loc[:, ['index',  c, 'Year']]
-            bar = sns.catplot(x=c, y='index', hue='Year', data=data_bar, kind ='bar', aspect=3, palette='Set2')
+            if i == 3:
+                data_bar=race_1620.loc[race_1620['index']!='Total', ['index', c, 'Year']]
+            else:
+                data_bar=race_1620.loc[:, ['index',  c, 'Year']]
+            bar_race = sns.catplot(x=c, y='index', hue='Year', data=data_bar, kind ='bar', aspect=3, palette='Set2')
             sns.set(font_scale=1.5)
-            bar.set_ylabels('Race')
-    return bar
+            bar_race.set_ylabels('Race')
+    return bar_race
