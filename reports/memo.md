@@ -1,27 +1,48 @@
-# Exploratory
+Agenda: 
 
-This directory contains unpolished exploratory data analysis (EDA) notebooks.
+    Recap of original study
+    Methodology
+    Geographical boundaries of South King County
+    Updated breakdown of Opportunity Youth (O.Y.) by age
+    Recommendations for SRP
+    Next Steps for Analysis
 
-Process and methods: 
 
-    1. Created the basetable that contains the data needed for analysis in the sql. 
-        * The total population is the serialno * pwgtp (the person weight)
-        * puma values from 11610 to 11615 are used to identify south King County.
-        * use esr for employee status.
+Recap of 2016 Study: 
 
-    2. Created tables to update the report tables on page2 in the 2016 report. 
-     https://roadmapproject.org/wp-content/uploads/2018/09/Opportunity-Youth-2016-Data-Brief-v2.pdf
+    O.Y. were an estimated 13% of the total youth population, i.e. people between the ages of 16 and 24 who are neither in school nor working (~19K of ~140K).
 
-    3. Installed tabula to extract the age table from the 2016 report. Created the race table for 2016 manually due to the tabula can only extract the age table. 
+    Why OY Matter: 
+        Social and economic costs for O.Y., the government and society at large
+        Talent pipeline solution for existing shortfall of candidates for local jobs
 
-    4. Use seaborn to create visualizations. Reformed the data table as a format that could use sns.catplot to generate the charts for the need. 
+    Data compiled by The Community Center for Education Results (CCER)
+    
+    In support of The Road Map Project
+    
+    For use by :
+        Seattle Region Partnership 
+        Seattle Metropolitan Chamber of Commerce
+        Seattle Foundation
+        City of Seattle
+        King County
 
-    5. Create map by using geopanda package. The map shapefile was downloaded from https://bit.ly/31P8Iqu
 
-    6. Wrote functions in Visual Studio, so that it is clean in the notebook when deliver the result to people.
+Methodology:
 
-    7. Update the environment.yml file. 
+    Identify O.Y. from PUMS 2013-2017 dataset published by the ACSO:
+    
+        Age
+        Sex
+        Employment Status
+        Race
+        Educational Attainment
+        PUMA Region (limited to South King County)
 
+    Identify South King County from MAF/TIGER DB published by the US Census Bureau: 
+        Use shapefiles to plot all counties in Washington; isolate King County; highlight South King County, defined by PUMA regions (11610-11615)
+
+    Assess trend between most recently available data (2017) and from original report (2014)
 
 FIndings from comparing 2016 reports and current analysis:
 
@@ -70,3 +91,4 @@ Next steps:
     * Industries with the greatest shortage of workers
     * Expanded Scope
     * Track O.Y. pipeline over time
+
