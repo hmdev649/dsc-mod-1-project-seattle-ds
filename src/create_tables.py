@@ -161,7 +161,7 @@ def create_race_2017(df):
     race_2017.insert(2, 'Rate of OY %', numb)
     for i in race_2017:
         race_2017[i]=race_2017[i].astype('int')
-    race_2017.reindex(['Total', 'American Indian\Alaska Native','Hawaiian and Other Pacific Islander',
+    race_2017=race_2017.reindex(['Total', 'American Indian\Alaska Native','Hawaiian and Other Pacific Islander',
     'Black\African American', 'Hispanic', 'Some other Race alone','Two or More Races',
     'White','Asian'])
     race_2017=race_2017[['Rate of OY %', 'Total', 'Proportion of OY %', 'Opportunity Youth']]
