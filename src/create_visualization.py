@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def pull_data():
-    ty_2016 =pd.read_csv('total_youth_2016.csv').round(0)
-    ty_2017=pd.read_csv('total_youth_2017.csv').round(0)
-    oy_2016=pd.read_csv('opportunity_youth_2016.csv').round(0)
-    oy_2017=pd.read_csv('opportunity_youth_2017.csv').round(0)
-    race_2017=pd.read_csv('race_2017.csv').round(0)
-    race2_2017=pd.read_csv('race2_2017.csv').round(0)
+    ty_2016=pd.read_csv('../exploratory/total_youth_2016.csv').round(0)
+    ty_2017=pd.read_csv('../exploratory/total_youth_2017.csv').round(0)
+    oy_2016=pd.read_csv('../exploratory/opportunity_youth_2016.csv').round(0)
+    oy_2017=pd.read_csv('../exploratory/opportunity_youth_2017.csv').round(0)
+    race_2017=pd.read_csv('../exploratory/race_2017.csv').round(0)
+    race2_2017=pd.read_csv('../exploratory/race2_2017.csv').round(0)
     datafiles={'ty_2016':ty_2016, 'ty_2017':ty_2017, 'oy_2016':oy_2016, 'oy_2017':oy_2017}
     return datafiles
 
@@ -16,7 +16,7 @@ def create_trend_bar_age(datafiles):
     ty_2016=datafiles['ty_2016'].rename(columns={'Unnamed: 0': 'youthtype'})
     ty_2016.set_index('youthtype', inplace=True)
     ty_2017=datafiles['ty_2017']
-    # ty_2017.set_index('youthtype', inplace=True)
+    ty_2017.set_index('youthtype', inplace=True)
 
     c_1620=pd.concat((ty_2016, ty_2017), axis=0, ignore_index=True)
     c_1620=c_1620.rename(index={0:'total youth', 1:'opportunity youth', 2: 'working without diploma', 3: 'not opportunity youth', 
