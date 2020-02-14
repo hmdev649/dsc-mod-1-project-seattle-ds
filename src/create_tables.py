@@ -30,7 +30,7 @@ SELECT
              ELSE 'Degree (Associate or Higher)'
              END as educationattainment,
         CASE WHEN a.rac1p = '1' AND HISP ='01' THEN 'White'
-             WHEN a.rac1p = '2' AND HISP ='01' THEN 'Black/African American'                                                         
+             WHEN a.rac1p = '2' AND HISP ='01' THEN 'Black\African American'                                                         
              WHEN (a.rac1p = '4' OR a.rac1p = '5' OR a.rac1p='3') AND HISP ='01' THEN 'American Indian\Alaska Native'
              WHEN a.rac1p = '6' AND HISP ='01' THEN 'Asian'
              WHEN a.rac1p = '7' AND HISP ='01' THEN 'Hawaiian and Other Pacific Islander'
@@ -72,6 +72,8 @@ def create_total_youth_2017(df):
         nd.insert(i*2, '%'+ str(c), newc)
     new_index1=['Total', 'Opportunity Youth', 'Working without Diploma', 'Not Opportunity Youth']
     total_youth_2017=nd.reindex(new_index1)
+    for i in total_youth_2017:
+        total_youth_2017[i]=total_youth_2017[i].astype('int')
     return total_youth_2017
 
 def create_opportunity_youth_2017(df):
@@ -95,12 +97,13 @@ def create_opportunity_youth_2017(df):
 
     new_index2=pd.Index(['Total', 'No Diploma', 'HS Diploma or GED', 'Some College, No Degree', 'Degree (Associate or Higher)'], 
                     name='educationattainment')
-    opportunity_youth_2017=md.reindex(new_index2)
+    for i in opportunity_youth_2017:
+        opportunity_youth_2017[i]=opportunity_youth_2017[i].astype('int')
     return opportunity_youth_2017
 
 def create_basetable_2016():
     df_2016 = read_pdf('https://roadmapproject.org/wp-content/uploads/2018/09/Opportunity-Youth-2016-Data-Brief-v2.pdf', 
-              pages='9', output_format='DataFrame')
+              pages='9', multiple_tables=True, output_format='DataFrame')
     df_2016=df_2016[0]
     df_2016.columns =['16-18', '19-21', '22-24', 'Total']
     return df_2016
@@ -118,6 +121,8 @@ def create_total_youth_2016(df_2016):
     for i, c in enumerate(total_2016):
         num=(total_2016[c]/total_2016[c]['Total'])*100
         total_2016.insert(i*2, '%'+str(c), num)
+        for i in total_2016:
+            total_2016[i]=total_2016[i].astype('int')
     return total_2016
 
 def create_opportunity_youth_2016(df_2016):
@@ -132,6 +137,8 @@ def create_opportunity_youth_2016(df_2016):
     for i, c in enumerate(oy_2016):
         num=(oy_2016[c]/oy_2016[c]['Total'])*100
         oy_2016.insert(i*2, '%'+str(c), num)
+        for i in oy_2016:
+            oy_2016[i]=oy_2016[i].astype('int')
     return oy_2016
     
 def create_race_2017(df):
@@ -144,24 +151,44 @@ def create_race_2017(df):
                margins=True,
                margins_name='Total'
               )['totalnumber']
-    race_2017.reset_index()
+    #race_2017.reset_index()
     race_2017.columns.rename('', inplace=True)
     race_2017=race_2017.drop(columns=['Not Opportunity Youth', 'Working without Diploma'])
 
-    numa=(race_2017['Opportunity Youth']/race_2017['Opportunity Youth'][8]*100)
-    race_2017.insert(0, '%oOpportunityYouth', numa)
-    numb=race_2017['Total']/race_2017['Total'][8]*100
-    race_2017.insert(2, '%oTotal', numb)
-    race_2017.reindex(['Total', 'American Indian\Alaska Native','Hawaiian and Other Pacific Islander alone',
-    'Black/African American', 'Hispanic', 'Some other Race alone','Two or More Races',
+    numa=race_2017['Opportunity Youth']/race_2017['Opportunity Youth'][8]*100
+    race_2017.insert(0, 'Proportion of OY %', numa)
+    numb=race_2017['Opportunity Youth']/race_2017['Total']*100
+    race_2017.insert(2, 'Rate of OY %', numb)
+    for i in race_2017:
+        race_2017[i]=race_2017[i].astype('int')
+    race_2017=race_2017.reindex(['Total', 'American Indian\Alaska Native','Hawaiian and Other Pacific Islander',
+    'Black\African American', 'Hispanic', 'Some other Race alone','Two or More Races',
     'White','Asian'])
+    race_2017=race_2017[['Rate of OY %', 'Total', 'Proportion of OY %', 'Opportunity Youth']]
+    race_2017.reset_index()
     return race_2017
+
+def create_race_2016():
+    race_2016_index=['Total', 'American Indian\Alaska Native','Hawaiian and Other Pacific Islander',
+    'Black\African American', 'Hispanic', 'Some other Race alone','Two or More Races',
+    'White','Asian']
+    race_2016_total=[139735, 1242, 1884, 14339, 11490, 6473, 12368, 69050, 22889]
+    race_2016_oy=[18817, 387, 439, 2791, 2008, 1112, 1534, 8547, 1999]
+
+    race_2016 = pd.DataFrame(list(zip(race_2016_total, race_2016_oy)), index=race_2016_index,
+                columns =['Total', 'Opportunity Youth']) 
+    race_2016['Rate of OY %']=race_2016['Opportunity Youth']/race_2016['Total']*100
+    race_2016['Proportion of OY %']=race_2016['Opportunity Youth']/race_2016['Opportunity Youth'][0]*100
+    race_2016=race_2016[['Rate of OY %', 'Total', 'Proportion of OY %', 'Opportunity Youth']]
+    for i in race_2016:
+            race_2016[i]=race_2016[i].astype('int')
+    return race_2016
 
 def create_race2_2017(df):
     race2_2017 =pd.pivot_table(df,
-               index=['race2'],
+               index=['youthtype'],
                values=['totalnumber'],
-               columns=['youthtype'],
+               columns=['race2'],
                aggfunc=np.sum,
                fill_value='',
                margins=True,
@@ -169,12 +196,12 @@ def create_race2_2017(df):
               )['totalnumber']
     race2_2017.reset_index()
     race2_2017.columns.rename('', inplace=True)
-    race2_2017=race2_2017.drop(columns=['Not Opportunity Youth', 'Working without Diploma'])
-
-    numa=(race2_2017['Opportunity Youth']/race2_2017['Opportunity Youth'][4]*100)
-    race2_2017.insert(0, '%oOpportunityYouth', numa)
-    numb=race2_2017['Total']/race2_2017['Total'][4]*100
-    race2_2017.insert(2, '%oTotal', numb)
-    race2_2017.round(0)
-    race2_2017.reindex(['Total', 'Black or'])
+    for i, c in enumerate(race2_2017):
+        num=(race2_2017[c]/race2_2017[c]['Total'])*100
+        race2_2017.insert(i*2, '%'+str(c), num)
+        for i in race2_2017:
+            race2_2017[i]=race2_2017[i].astype('int')
+        race2_2017.reindex(['Total', 'Opportunity Youth','Working without Diploma','Not Opportunity Youth'])
     return race2_2017
+
+    
