@@ -34,6 +34,7 @@ def create_trend_bar_age(datafiles):
             bar.set_titles('Youth Type by Age')
             bar.set_xlabels('Youth Type')
             sns.set(font_scale=1.5)
+            plt.savefig(f'../../reports/figures/barchartage{i}.png')
     return bar
 
 def create_trend_bar_degree(datafiles):
@@ -52,7 +53,8 @@ def create_trend_bar_degree(datafiles):
             bar =sns.catplot(x='educationattainment', y=c, hue='Year', data=data_bar, 
                             kind='bar', height=6, aspect=3, ci=None, palette= 'RdBu', margin_titles=c)
             bar.set_titles(c)
-            sns.set(font_scale=1.5)    
+            sns.set(font_scale=1.5) 
+            plt.savefig(f'../../reports/figures/barchartdegree{i}.png')   
     return bar
  
 def create_race_bar(race_2016,race_2017):
@@ -62,15 +64,7 @@ def create_race_bar(race_2016,race_2017):
     race_1620=race_1620.rename(columns={'Total': 'Total Population'})
     race_1620=race_1620.reset_index()
    
-    # for i, c in enumerate(race_1620):
-    #     if 0<i <5:
-    #         if i == 3:
-    #             data_bar=race_1620.loc[race_1620['index']!='Total', ['index', c, 'Year']]
-    #         else:
-    #             data_bar=race_1620.loc[:, ['index',  c, 'Year']]
-    #         bar = sns.catplot(x=c, y='index', hue='Year', data=data_bar, kind ='bar', aspect=3, palette='Set2')
-    #         sns.set(font_scale=1.5)
-    #         bar.set_ylabels('Race')
+
     for i, c in enumerate(race_1620):
         if 0<i <5:
             if i == 3:
@@ -79,5 +73,6 @@ def create_race_bar(race_2016,race_2017):
                 data_bar=race_1620.loc[:, ['index',  c, 'Year']]
             bar_race = sns.catplot(x=c, y='index', hue='Year', data=data_bar, kind ='bar', aspect=3, palette='Set2')
             sns.set(font_scale=1.5)
-            bar_race.set_ylabels('Race')
+            bar_race.set_ylabels('Race')  
+            plt.savefig(f'../../reports/figures/barchartrace{i}.png')
     return bar_race
