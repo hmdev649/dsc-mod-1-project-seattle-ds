@@ -159,6 +159,14 @@ def execute_sql_script(conn, script_filename):
     cursor.execute(file_contents)
     conn.commit()
 
+def sql_script_to_df(conn, script_filename):
+    """
+    Given a DB connection and a file path to a SQL script, open up the SQL
+    script, execute it, and return the result as a Pandas DataFrame
+    """
+    file_contents = open_sql_script(script_filename)
+    df = pd.read_sql(file_contents, conn)
+    return df
 
 def open_sql_script(script_filename):
     """
